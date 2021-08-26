@@ -1,14 +1,18 @@
 <script context="module">
   export async function load({ page }) {
-    const url = `https://pokeapi.co/api/v2/pokemon?limit=150`;
+    const patt = /(\d+)(?!.*\d)/;
+    const url = `https://pokeapi.co/api/v2/pokedex/5/`
     const res = await fetch(url);
     const data = await res.json();
-    const loadedPokemon = data.results.map((data, index) => {
+    const loadedPokemon = data.pokemon_entries.map((data, index) => {
+      const pokeid = patt.exec(data.pokemon_species.url)[0];
       return {
-        name: data.name,
+        name: data.pokemon_species.name,
         id: index + 1,
+        sinnoh: index + 1,
+        national: pokeid,
         image: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-          index + 1
+          pokeid
         }.png`
       };
     });
@@ -44,7 +48,6 @@
   type="text"
   bind:value={searchTerm}
   placeholder="Search Pokemon..."
-  autofocus
 />
 
 <div class="py-4 grid gap-4 md:grid-cols-3 grid-cols-1">

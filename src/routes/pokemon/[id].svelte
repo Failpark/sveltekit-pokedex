@@ -10,7 +10,12 @@
 
 <script lang="ts">
   export let pokeman;
-  const type = pokeman.types[0].type.name;
+  var type;
+  if (pokeman.types.length > 1) {
+    type = pokeman.types[0].type.name + " & " + pokeman.types[1].type.name;
+  } else {
+    type = pokeman.types[0].type.name;
+  }
 </script>
 
 <div class="flex flex-col items-center">
